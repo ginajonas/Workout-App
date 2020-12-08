@@ -13,8 +13,17 @@ router.post('/api/workouts', ({ body }, res) => {
 
 router.put('/api/workouts/:id', (req, res) => {
   const workoutId = req.params.id
-  Workout.findByIdAndUpd
-    .find({})
+  Workout.findByIdAndUpdate(workoutId, { $push: { exercises: req.body } })
+    .then((dbWorkout) => {
+      res.json(dbWorkout)
+    })
+    .catch((err) => {
+      res.status(400).json(err)
+    })
+})
+
+router.get('/api/workouts', (req, res) => {
+  Workout.find({})
     .then((dbWorkout) => {
       res.json(dbWorkout)
     })
